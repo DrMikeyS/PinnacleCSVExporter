@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="style.css">
+
+    <title>Pinnacle to CSV</title>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Pinnacle to CSV</h1>
+
+        <label for="pinnacle">Copied Pinnacle Content:</label>
+
+        <textarea class="form-control" id="pinnacle" name="pinnacle" rows="4" cols="50"></textarea>
+        <button type="button" class="btn btn-primary btn-block my-4" id="convert">Download as CSV</button>
+        <button type="button" class="btn btn-primary btn-block my-4" id="stats">Summary Statistics</button>
+        <div id="output">
+            <table class="table" id="stats-table">
+                <thead>
+                    <tr>
+                        <th scope="col"></th>
+                        <th scope="col">Number of Vaccines</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/1.0.11/jquery.csv.min.js" integrity="sha512-Y8iWYJDo6HiTo5xtml1g4QqHtl/PO1w+dmUpQfQSOTqKNsMhExfyPN2ncNAe9JuJUSKzwK/b6oaNPop4MXzkwg==" crossorigin="anonymous"></script>
+    <script src="script.js"></script>
+    <script>
+        $('#stats').click(function() {
+            fullpagestring = $('#pinnacle').val();
+            if (fullpagestring != "") {
+                csvContent = generateCSVString(fullpagestring);
+                csvObject = $.csv.toObjects(csvContent)
+                var stats = getPinnacleStats(csvObject)
+                $('#stats-table').css('display', 'block');
+                $('#stats-table').append(generateTableRows(stats));
+            }
+        });
+
+        $('#convert').click(function() {
+            fullpagestring = $('#pinnacle').val();
+            if (fullpagestring != "") {
+                csvContent = generateCSVString(fullpagestring);
+                generateDownloadCSV(csvContent);
+            }
+        });
+
+    </script>
+</body>
+
+</html>
