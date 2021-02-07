@@ -37,7 +37,7 @@
             </button>
         </div>
         <div id="output">
-            <button type="button" class="btn btn-primary btn-block my-4" id="download">
+            <button type="button" class="btn btn-primary btn-block my-4" id="download-1">
                 Download CSV
             </button>
         </div>
@@ -60,7 +60,7 @@
                                     "In Accubook List but NOT Pinnacle": comparisonObject.accubookNotFoundInPinnacle.length,
                                 };
                                 $("#output").prepend(generateTable(stats));
-                                $("#download").show();
+                                $("#download-1").show();
                             }
                         );
                     }
@@ -68,7 +68,7 @@
             }
         });
 
-        $("#download").click(function() {
+        $("#download-1").click(function() {
             csvContent = $.csv.fromObjects(
                 comparisonObject.pinnacleNotFoundInAccubook
             );
