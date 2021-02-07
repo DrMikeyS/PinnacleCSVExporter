@@ -1,96 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <!-- Required meta tags -->
     <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, shrink-to-fit=no"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
-   <!--Libraries-->
-   <link rel="stylesheet" href="scripts/libraries/css/bootstrap.min.css">
-    
-   <script src="scripts/libraries/js/jquery-3.5.1.min.js"></script>
-   <script src="scripts/libraries/js/bootstrap.bundle.min.js"></script>
-   <script src="scripts/libraries/js/jquery.csv.min.js"></script>
+    <!--Libraries-->
+    <link rel="stylesheet" href="scripts/libraries/css/bootstrap.min.css">
 
-   <!--Custom scripts-->
-   <link rel="stylesheet" href="scripts/style.css">
-   <script src="scripts/functions.js"></script>
+    <script src="scripts/libraries/js/jquery-3.5.1.min.js"></script>
+    <script src="scripts/libraries/js/bootstrap.bundle.min.js"></script>
+    <script src="scripts/libraries/js/jquery.csv.min.js"></script>
+
+    <!--Custom scripts-->
+    <link rel="stylesheet" href="scripts/style.css">
+    <script src="scripts/functions.js"></script>
     <title>Merge Multiple Accubook Sessions & Stats</title>
-  </head>
+</head>
 
-  <body>
-    <div class="container mt-5"">
+<body>
+    <div class="container mt-5">
         <a class="btn btn-outline-primary mb-2" href="index.html" role="button">&laquo; Back</a>
-      <h1>Merge Multiple Accubook Sessions & Stats</h1>
-      <p>
-        Either upload multiple or single Accubook sessions. Mutliple sessions
-        can then be downloaded in one file. Single sessions will reveal
-        statistics.
-      </p>
-      <div id="stage-1">
-        <label for="accubook-sessions">Select Session CSV Files:</label>
-        <input
-          class="form-control"
-          id="accubook-sessions"
-          type="file"
-          multiple
-        />
-      </div>
-      <div id="stage-2">
-        <div class="progress">
-          <div
-            class="progress-bar progress-bar-striped"
-            role="progressbar"
-            style="width: 0%"
-            id="progress"
-          ></div>
+        <h1>Merge Multiple Accubook Sessions & Stats</h1>
+        <p>
+            Either upload multiple or single Accubook sessions. Mutliple sessions
+            can then be downloaded in one file. Single sessions will reveal
+            statistics.
+        </p>
+        <div id="stage-1">
+            <label for="accubook-sessions">Select Session CSV Files:</label>
+            <input class="form-control" id="accubook-sessions" type="file" multiple />
         </div>
+        <div id="stage-2">
+            <div class="progress">
+                <div class="progress-bar progress-bar-striped" role="progressbar" style="width: 0%" id="progress"></div>
+            </div>
 
-        <button
-          type="button"
-          class="btn btn-primary btn-block my-4"
-          id="download"
-        >
-          Download Merged CSV
-        </button>
+            <button type="button" class="btn btn-primary btn-block my-4" id="download">
+                Download Merged CSV
+            </button>
 
-        <div id="output"></div>
-      </div>
+            <div id="output"></div>
+        </div>
     </div>
 
     <script>
-      var csvs = [];
+        var csvs = [];
 
-      $("#download").click(function () {
-        if (csvs.length > 0) {
-          csvContent = $.csv.fromObjects(csvs);
-          generateDownloadCSV(csvContent, "AccubookMerge");
-        }
-      });
+        $("#download").click(function() {
+            if (csvs.length > 0) {
+                csvContent = $.csv.fromObjects(csvs);
+                generateDownloadCSV(csvContent, "AccubookMerge");
+            }
+        });
 
-      $("#accubook-sessions").on("change", function (e) {
-        if (this.files) {
-          $("#stage-2").show();
-          $("#stage-1").hide();
-          var i = 1;
-          var len = this.files.length;
-          for (const file of this.files) {
-            readCSVFileAndReturnPromise(file).then(function (out) {
-              csvs = csvs.concat(out);
-              progress = (i / len) * 100;
-              $("#progress").width(progress + "%");
-              i++;
-              if (progress == 100) {
-                var stats = getAccubookStats(csvs);
-                $("#output").append(generateTable(stats));
-              }
-            });
-          }
-        }
-      });
+        $("#accubook-sessions").on("change", function(e) {
+            if (this.files) {
+                $("#stage-2").show();
+                $("#stage-1").hide();
+                var i = 1;
+                var len = this.files.length;
+                for (const file of this.files) {
+                    readCSVFileAndReturnPromise(file).then(function(out) {
+                        csvs = csvs.concat(out);
+                        progress = (i / len) * 100;
+                        $("#progress").width(progress + "%");
+                        i++;
+                        if (progress == 100) {
+                            var stats = getAccubookStats(csvs);
+                            $("#output").append(generateTable(stats));
+                        }
+                    });
+                }
+            }
+        });
+
     </script>
-  </body>
+</body>
+
 </html>

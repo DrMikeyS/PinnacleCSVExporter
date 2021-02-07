@@ -1,87 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <!-- Required meta tags -->
     <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, shrink-to-fit=no"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
-       <!--Libraries-->
-   <link rel="stylesheet" href="scripts/libraries/css/bootstrap.min.css">
-    
-   <script src="scripts/libraries/js/jquery-3.5.1.min.js"></script>
-   <script src="scripts/libraries/js/bootstrap.bundle.min.js"></script>
-   <script src="scripts/libraries/js/jquery.csv.min.js"></script>
+    <!--Libraries-->
+    <link rel="stylesheet" href="scripts/libraries/css/bootstrap.min.css">
 
-   <!--Custom scripts-->
-   <link rel="stylesheet" href="scripts/style.css">
-   <script src="scripts/functions.js"></script>
+    <script src="scripts/libraries/js/jquery-3.5.1.min.js"></script>
+    <script src="scripts/libraries/js/bootstrap.bundle.min.js"></script>
+    <script src="scripts/libraries/js/jquery.csv.min.js"></script>
+
+    <!--Custom scripts-->
+    <link rel="stylesheet" href="scripts/style.css">
+    <script src="scripts/functions.js"></script>
 
     <title>Pinnacle to CSV</title>
-  </head>
+</head>
 
-  <body>
-    <div class="container mt-5"">
+<body>
+    <div class="container mt-5">
         <a class="btn btn-outline-primary mb-2" href="index.html" role="button">&laquo; Back</a>
-      <h1>Pinnacle to CSV</h1>
+        <h1>Pinnacle to CSV</h1>
 
-      <label for="pinnacle">Copied Pinnacle Content:</label>
+        <label for="pinnacle">Copied Pinnacle Content:</label>
 
-      <textarea
-        class="form-control"
-        id="pinnacle"
-        name="pinnacle"
-        rows="4"
-        cols="50"
-      ></textarea>
-      <button type="button" class="btn btn-primary btn-block my-4" id="convert">
-        Download as CSV
-      </button>
-      <button type="button" class="btn btn-primary btn-block my-4" id="stats">
-        Summary Statistics
-      </button>
-      <div id="output">
-        <button
-          type="button"
-          class="btn btn-primary btn-block my-4"
-          id="duplicates"
-        >
-          Download Duplicates
+        <textarea class="form-control" id="pinnacle" name="pinnacle" rows="4" cols="50"></textarea>
+        <button type="button" class="btn btn-primary btn-block my-4" id="convert">
+            Download as CSV
         </button>
-      </div>
+        <button type="button" class="btn btn-primary btn-block my-4" id="stats">
+            Summary Statistics
+        </button>
+        <div id="output">
+            <button type="button" class="btn btn-primary btn-block my-4" id="duplicates">
+                Download Duplicates
+            </button>
+        </div>
+        <div>
+            <h2>Instructions</h2>
+            <p><img src="https://durhamstudenthealth.co.uk/dev/UserGuide.gif"></p>
+        </div>
     </div>
 
     <script>
-      var duplicates;
-      $("#stats").click(function () {
-        fullpagestring = $("#pinnacle").val();
-        if (fullpagestring != "") {
-          csvContent = generateCSVString(fullpagestring);
-          csvObject = $.csv.toObjects(csvContent);
-          var stats = getPinnacleStats(csvObject);
-          duplicates = checkForPinnacleDuplicates(csvObject);
-          stats["duplicates"] = duplicates.length;
-          $("#output").prepend(generateTable(stats));
-          if (duplicates.length > 0) {
-            $("#duplicates").show();
-          }
-        }
-      });
+        var duplicates;
+        $("#stats").click(function() {
+            fullpagestring = $("#pinnacle").val();
+            if (fullpagestring != "") {
+                csvContent = generateCSVString(fullpagestring);
+                csvObject = $.csv.toObjects(csvContent);
+                var stats = getPinnacleStats(csvObject);
+                duplicates = checkForPinnacleDuplicates(csvObject);
+                stats["duplicates"] = duplicates.length;
+                $("#output").prepend(generateTable(stats));
+                if (duplicates.length > 0) {
+                    $("#duplicates").show();
+                }
+            }
+        });
 
-      $("#convert").click(function () {
-        fullpagestring = $("#pinnacle").val();
-        if (fullpagestring != "") {
-          csvContent = generateCSVString(fullpagestring);
-          generateDownloadCSV(csvContent, "Pinnacle");
-        }
-      });
+        $("#convert").click(function() {
+            fullpagestring = $("#pinnacle").val();
+            if (fullpagestring != "") {
+                csvContent = generateCSVString(fullpagestring);
+                generateDownloadCSV(csvContent, "Pinnacle");
+            }
+        });
 
-      $("#duplicates").click(function () {
-        csvContent = $.csv.fromObjects(duplicates);
-        generateDownloadCSV(csvContent, "Duplicates");
-      });
+        $("#duplicates").click(function() {
+            csvContent = $.csv.fromObjects(duplicates);
+            generateDownloadCSV(csvContent, "Duplicates");
+        });
+
     </script>
-  </body>
+</body>
+
 </html>

@@ -1,95 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <!-- Required meta tags -->
     <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, shrink-to-fit=no"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
-   <!--Libraries-->
-   <link rel="stylesheet" href="scripts/libraries/css/bootstrap.min.css">
-    
-   <script src="scripts/libraries/js/jquery-3.5.1.min.js"></script>
-   <script src="scripts/libraries/js/bootstrap.bundle.min.js"></script>
-   <script src="scripts/libraries/js/jquery.csv.min.js"></script>
+    <!--Libraries-->
+    <link rel="stylesheet" href="scripts/libraries/css/bootstrap.min.css">
 
-   <!--Custom scripts-->
-   <link rel="stylesheet" href="scripts/style.css">
-   <script src="scripts/functions.js"></script>
+    <script src="scripts/libraries/js/jquery-3.5.1.min.js"></script>
+    <script src="scripts/libraries/js/bootstrap.bundle.min.js"></script>
+    <script src="scripts/libraries/js/jquery.csv.min.js"></script>
+
+    <!--Custom scripts-->
+    <link rel="stylesheet" href="scripts/style.css">
+    <script src="scripts/functions.js"></script>
     <title>Compare Pinnacle to Accubook</title>
-  </head>
+</head>
 
-  <body>
-    <div class="container mt-5"">
+<body>
+    <div class="container mt-5">
         <a class="btn btn-outline-primary mb-2" href="index.html" role="button">&laquo; Back</a>
-      <h1>Compare Pinnacle to Accubook</h1>
-      <div id="stage-1">
-        <p>
-          <label for="accubook">Select Accubook CSV Data:</label>
-          <input class="form-control" id="accubook" type="file" />
-        </p>
-        <p>
-          <label for="pinnacle">Select Pinnacle CSV Data:</label>
-          <input class="form-control" id="pinnacle" type="file" />
-        </p>
-        <button
-          type="button"
-          class="btn btn-primary btn-block my-4"
-          id="compare"
-        >
-          Compare
-        </button>
-      </div>
-      <div id="output">
-        <button
-          type="button"
-          class="btn btn-primary btn-block my-4"
-          id="download"
-        >
-          Download CSV
-        </button>
-      </div>
+        <h1>Compare Pinnacle to Accubook</h1>
+        <div id="stage-1">
+            <p>
+                <label for="accubook">Select Accubook CSV Data:</label>
+                <input class="form-control" id="accubook" type="file" />
+            </p>
+            <p>
+                <label for="pinnacle">Select Pinnacle CSV Data:</label>
+                <input class="form-control" id="pinnacle" type="file" />
+            </p>
+            <button type="button" class="btn btn-primary btn-block my-4" id="compare">
+                Compare
+            </button>
+        </div>
+        <div id="output">
+            <button type="button" class="btn btn-primary btn-block my-4" id="download">
+                Download CSV
+            </button>
+        </div>
     </div>
 
     <script>
-      var comparisonObject;
-      $("#compare").click(function () {
-        if ($("#accubook").get(0).files[0] && $("#pinnacle").get(0).files[0]) {
-          readCSVFileAndReturnPromise($("#accubook").get(0).files[0]).then(
-            function (accubookObjs) {
-              readCSVFileAndReturnPromise($("#pinnacle").get(0).files[0]).then(
-                function (pinnacleObjs) {
-                  comparisonObject = compareAccubookPinnacle(
-                    accubookObjs,
-                    pinnacleObjs
-                  );
-                  stats = {
-                    "In Pinnacle List but NOT Accubook":
-                      comparisonObject.pinnacleNotFoundInAccubook.length,
-                    "In Accubook List but NOT Pinnacle":
-                      comparisonObject.accubookNotFoundInPinnacle.length,
-                  };
-                  $("#output").prepend(generateTable(stats));
-                  $("#download").show();
-                }
-              );
+        var comparisonObject;
+        $("#compare").click(function() {
+            if ($("#accubook").get(0).files[0] && $("#pinnacle").get(0).files[0]) {
+                readCSVFileAndReturnPromise($("#accubook").get(0).files[0]).then(
+                    function(accubookObjs) {
+                        readCSVFileAndReturnPromise($("#pinnacle").get(0).files[0]).then(
+                            function(pinnacleObjs) {
+                                comparisonObject = compareAccubookPinnacle(
+                                    accubookObjs,
+                                    pinnacleObjs
+                                );
+                                stats = {
+                                    "In Pinnacle List but NOT Accubook": comparisonObject.pinnacleNotFoundInAccubook.length,
+                                    "In Accubook List but NOT Pinnacle": comparisonObject.accubookNotFoundInPinnacle.length,
+                                };
+                                $("#output").prepend(generateTable(stats));
+                                $("#download").show();
+                            }
+                        );
+                    }
+                );
             }
-          );
-        }
-      });
+        });
 
-      $("#download").click(function () {
-        csvContent = $.csv.fromObjects(
-          comparisonObject.pinnacleNotFoundInAccubook
-        );
-        generateDownloadCSV(csvContent, "pinnacleNotFoundInAccubook");
-        csvContent = $.csv.fromObjects(
-          comparisonObject.accubookNotFoundInPinnacle
-        );
-        generateDownloadCSV(csvContent, "accubookNotFoundInPinnacle");
-      });
+        $("#download").click(function() {
+            csvContent = $.csv.fromObjects(
+                comparisonObject.pinnacleNotFoundInAccubook
+            );
+            generateDownloadCSV(csvContent, "pinnacleNotFoundInAccubook");
+            csvContent = $.csv.fromObjects(
+                comparisonObject.accubookNotFoundInPinnacle
+            );
+            generateDownloadCSV(csvContent, "accubookNotFoundInPinnacle");
+        });
+
     </script>
-  </body>
+</body>
+
 </html>
