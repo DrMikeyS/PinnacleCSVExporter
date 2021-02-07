@@ -1,94 +1,112 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-
-<head>
+  <head>
     <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
 
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" />
     <title>Compare Pinnacle to Accubook</title>
+  </head>
 
-</head>
-
-<body>
-    <div class="container">
-        <h1>Compare Pinnacle to Accubook</h1>
-        <div id="stage-1">
-            <p>
-                <label for="accubook">Select Accubook CSV Data:</label>
-                <input class="form-control" id="accubook" type="file" />
-            </p>
-            <p>
-                <label for="pinnacle">Select Pinnacle CSV Data:</label>
-                <input class="form-control" id="pinnacle" type="file" />
-            </p>
-            <button type="button" class="btn btn-primary btn-block my-4" id="compare">Compare</button>
-        </div>
-        <div id="stage-2">
-            <div class="progress">
-                <div class="progress-bar progress-bar-striped" role="progressbar" style="width: 0%" id="progress"></div>
-            </div>
-
-            <button type="button" class="btn btn-primary btn-block my-4" id="download">Download Merged CSV</button>
-
-            <div id="output">
-                <table class="table" id="stats-table">
-                    <thead>
-                        <tr>
-                            <th scope="col"></th>
-                            <th scope="col">Number of Vaccines</th>
-                        </tr>
-                    </thead>
-                </table>
-            </div>
-        </div>
+  <body>
+    <div class="container mt-5"">
+        <a class="btn btn-outline-primary mb-2" href="index.html" role="button">&laquo; Back</a>
+      <h1>Compare Pinnacle to Accubook</h1>
+      <div id="stage-1">
+        <p>
+          <label for="accubook">Select Accubook CSV Data:</label>
+          <input class="form-control" id="accubook" type="file" />
+        </p>
+        <p>
+          <label for="pinnacle">Select Pinnacle CSV Data:</label>
+          <input class="form-control" id="pinnacle" type="file" />
+        </p>
+        <button
+          type="button"
+          class="btn btn-primary btn-block my-4"
+          id="compare"
+        >
+          Compare
+        </button>
+      </div>
+      <div id="output">
+        <button
+          type="button"
+          class="btn btn-primary btn-block my-4"
+          id="download"
+        >
+          Download CSV
+        </button>
+      </div>
     </div>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/1.0.11/jquery.csv.min.js" integrity="sha512-Y8iWYJDo6HiTo5xtml1g4QqHtl/PO1w+dmUpQfQSOTqKNsMhExfyPN2ncNAe9JuJUSKzwK/b6oaNPop4MXzkwg==" crossorigin="anonymous"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/1.0.11/jquery.csv.min.js"
+      integrity="sha512-Y8iWYJDo6HiTo5xtml1g4QqHtl/PO1w+dmUpQfQSOTqKNsMhExfyPN2ncNAe9JuJUSKzwK/b6oaNPop4MXzkwg=="
+      crossorigin="anonymous"
+    ></script>
     <script src="script.js"></script>
     <script>
-        $('#compare').click(function() {
-            if ($('#accubook').get(0).files[0] && $('#pinnacle').get(0).files[0]) {
-                readCSVFileAndReturnPromise($('#accubook').get(0).files[0]).then(function(accubookObjs) {
-                    readCSVFileAndReturnPromise($('#pinnacle').get(0).files[0]).then(function(pinnacleObjs) {
-                        console.log(compareAccubookPinnacle(accubookObjs, pinnacleObjs));
-                    });
-                })
-            }
-        });
-
-        function compareAccubookPinnacle(accubookObjs, pinnacleObjs) {
-            var patientsNotFound = {
-                pinnacleNotFoundInAccubook: [],
-                accubookNotFoundInAccubook: []
-            };
-            accubookObjs = accubookObjs.filter(patient => patient.Arrived == "True");
-            pinnacleObjs = pinnacleObjs.filter(patient => patient.Status == "Completed")
-            for (pinnaclePatient of pinnacleObjs) {
-                search = accubookObjs.filter(patient => patient.NhsNumber == pinnaclePatient.NHSNumber).length;
-                if (search === 0) {
-                    patientsNotFound['pinnacleNotFoundInAccubook'].push(pinnaclePatient);
+      var comparisonObject;
+      $("#compare").click(function () {
+        if ($("#accubook").get(0).files[0] && $("#pinnacle").get(0).files[0]) {
+          readCSVFileAndReturnPromise($("#accubook").get(0).files[0]).then(
+            function (accubookObjs) {
+              readCSVFileAndReturnPromise($("#pinnacle").get(0).files[0]).then(
+                function (pinnacleObjs) {
+                  comparisonObject = compareAccubookPinnacle(
+                    accubookObjs,
+                    pinnacleObjs
+                  );
+                  stats = {
+                    "In Pinnacle List but NOT Accubook":
+                      comparisonObject.pinnacleNotFoundInAccubook.length,
+                    "In Accubook List but NOT Pinnacle":
+                      comparisonObject.accubookNotFoundInPinnacle.length,
+                  };
+                  $("#output").prepend(generateTable(stats));
+                  $("#download").show();
                 }
+              );
             }
-
-            for (accubookPatient of accubookObjs) {
-                search = pinnacleObjs.filter(patient => patient.NHSNumber == accubookPatient.NhsNumber).length;
-                if (search === 0) {
-                    patientsNotFound['accubookNotFoundInAccubook'].push(accubookPatient);
-                }
-            }
-            return patientsNotFound;
+          );
         }
+      });
 
+      $("#download").click(function () {
+        csvContent = $.csv.fromObjects(
+          comparisonObject.pinnacleNotFoundInAccubook
+        );
+        generateDownloadCSV(csvContent, "pinnacleNotFoundInAccubook");
+        csvContent = $.csv.fromObjects(
+          comparisonObject.accubookNotFoundInPinnacle
+        );
+        generateDownloadCSV(csvContent, "accubookNotFoundInPinnacle");
+      });
     </script>
-</body>
-
+  </body>
 </html>

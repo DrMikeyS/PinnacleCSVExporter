@@ -57,12 +57,12 @@ function generateDownloadCSV(csvContent, filename) {
     document.body.removeChild(link);
 }
 
-function generateTableRows(obj) {
-    var string;
+function generateTable(obj) {
+    var string = '<table class="table" id="stats-table">';
     for (const [key, value] of Object.entries(obj)) {
         string = string + '<tr><td>' + key + '</td><td>' + value + '</td></tr>';
     }
-    return string;
+    return string+'</table>';
 }
 
 function getPinnacleStats(csvObjects) {
@@ -115,3 +115,52 @@ function getUniquePractices(array) {
     }
     return output;
 }
+
+function compareAccubookPinnacle(accubookObjs, pinnacleObjs) {
+    var patientsNotFound = {
+        pinnacleNotFoundInAccubook: [],
+        accubookNotFoundInPinnacle: []
+    };
+    accubookObjs = accubookObjs.filter(patient => patient.Arrived == "True");
+    pinnacleObjs = pinnacleObjs.filter(patient => patient.Status == "Completed")
+    for (pinnaclePatient of pinnacleObjs) {
+        search = accubookObjs.filter(patient => patient.NhsNumber == pinnaclePatient.NHSNumber).length;
+        if (search === 0) {
+            patientsNotFound['pinnacleNotFoundInAccubook'].push(pinnaclePatient);
+        }
+    }
+
+    for (accubookPatient of accubookObjs) {
+        search = pinnacleObjs.filter(patient => patient.NHSNumber == accubookPatient.NhsNumber).length;
+        if (search === 0) {
+            patientsNotFound['accubookNotFoundInPinnacle'].push(accubookPatient);
+        }
+    }
+    return patientsNotFound;
+}
+
+function checkForPinnacleDuplicates(pinnacleObjs) {
+    var duplicatePatients = [];
+    pinnacleObjs = pinnacleObjs.filter(
+      (patient) => patient.Status == "Completed"
+    );
+    listByDose = [
+      pinnacleObjs.filter(
+        (patient) => patient.FirstOrSecond == "First Vaccination"
+      ),
+      pinnacleObjs.filter(
+        (patient) => patient.FirstOrSecond == "Second Vaccination"
+      ),
+    ];
+    for (list of listByDose) {
+      for (pinnaclePatient of list) {
+        search = list.filter(
+          (patient) => patient.NHSNumber == pinnaclePatient.NHSNumber
+        ).length;
+        if (search > 1) {
+          duplicatePatients.push(pinnaclePatient);
+        }
+      }
+    }
+    return duplicatePatients;
+  }
