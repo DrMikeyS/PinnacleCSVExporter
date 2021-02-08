@@ -54,7 +54,7 @@
                 csvObject = $.csv.toObjects(csvContent);
                 var stats = getPinnacleStats(csvObject);
                 duplicates = checkForPinnacleDuplicates(csvObject);
-                stats["duplicates"] = duplicates.length;
+                stats["Duplicates (testing, check your CSV file to be sure)"] = duplicates.length;
                 $("#output").prepend(generateTable(stats));
                 if (duplicates.length > 0) {
                     $("#duplicates").show();
