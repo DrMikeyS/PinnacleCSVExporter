@@ -62,7 +62,7 @@ function generateTable(obj) {
     for (const [key, value] of Object.entries(obj)) {
         string = string + '<tr><td>' + key + '</td><td>' + value + '</td></tr>';
     }
-    return string+'</table>';
+    return string + '</table>';
 }
 
 function getPinnacleStats(csvObjects) {
@@ -142,25 +142,25 @@ function compareAccubookPinnacle(accubookObjs, pinnacleObjs) {
 function checkForPinnacleDuplicates(pinnacleObjs) {
     var duplicatePatients = [];
     pinnacleObjs = pinnacleObjs.filter(
-      (patient) => patient.Status == "Completed"
+        (patient) => patient.Status == "Completed"
     );
     listByDose = [
       pinnacleObjs.filter(
-        (patient) => patient.FirstOrSecond == "First Vaccination"
-      ),
+            (patient) => patient.FirstOrSecond == "First Vaccination"
+        ),
       pinnacleObjs.filter(
-        (patient) => patient.FirstOrSecond == "Second Vaccination"
-      ),
+            (patient) => patient.FirstOrSecond == "Second Vaccination"
+        ),
     ];
     for (list of listByDose) {
-      for (pinnaclePatient of list) {
-        search = list.filter(
-          (patient) => patient.NHSNumber == pinnaclePatient.NHSNumber
-        ).length;
-        if (search > 1) {
-          duplicatePatients.push(pinnaclePatient);
+        for (pinnaclePatient of list) {
+            search = list.filter(
+                (patient) => patient.NHSNumber == pinnaclePatient.NHSNumber
+            ).length;
+            if (search > 1) {
+                duplicatePatients.push(pinnaclePatient);
+            }
         }
-      }
     }
     return duplicatePatients;
-  }
+}
