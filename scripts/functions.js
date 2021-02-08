@@ -146,7 +146,7 @@ function compareAccubookPinnacle(accubookObjs, pinnacleObjs) {
         pinnacleNotFoundInAccubook: [],
         accubookNotFoundInPinnacle: []
     };
-    accubookObjs = accubookObjs.filter(patient => patient.Arrived == "True");
+    //accubookObjs = accubookObjs.filter(patient => patient.Arrived == "True");
     pinnacleObjs = pinnacleObjs.filter(patient => patient.Status == "Completed")
     for (pinnaclePatient of pinnacleObjs) {
         search = accubookObjs.filter(patient => patient.NhsNumber == pinnaclePatient.NHSNumber).length;
