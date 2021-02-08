@@ -47,7 +47,6 @@ function extractSingleRecordToArray(str) {
 function convertListToArray(theListString) {
     theListString = theListString.replaceAll("reinstate\n", "");
 theListString = theListString.replaceAll("Cancel\n", "");
-theListString = theListString.replaceAll("Cancel", "");
 var theListArray = theListString.split("Click to ")
 //removeCancelledList
 theListArray.splice(-1, 1)
