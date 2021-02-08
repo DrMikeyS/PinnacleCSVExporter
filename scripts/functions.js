@@ -16,24 +16,47 @@ function extractSingleRecordToArray(str) {
     res = res.replace("\nClick to ", "");
     res = res.replaceAll("		", "\n");
     res = res.replace("Vaccination	", "Vaccination\n");
-    res = res.replace("	Completed", "\nCompleted");
-    res = res.replace("	Pending\nawaiting completion", "\nPending");
+    res = res.replace("	Cancelled\n", "\nCancelled");
+    res = res.replace("	Completed\n", "\nCompleted");
+    res = res.replace("	Pending\nawaiting completion\n", "\nPending");
     res = res.replaceAll("	", "")
     resArray = res.split("\n")
+
+    //Insert blank field if cancelled or pending
+    containsVaccinationString = res.indexOf("Vaccination");
+    if (containsVaccinationString === -1) {
+    	resArray.splice(5, 0, "");
+    }
+
+    //Sort random middle field
+ if(resArray[4].length>12){ //ie longer than a postcode should be
+ 	contains1VaccinationString = res.indexOf("First Vaccination");
+  contains2VaccinationString = res.indexOf("Second Vaccination");
+  vaccinationbit=''
+  if (contains1VaccinationString >0) {
+  	vaccinationbit = "First Vaccination"
+  }else if (contains2VaccinationString >0) {
+  	vaccinationbit = "Second Vaccination"
+  }    
+  resArray.splice(5, 0, vaccinationbit);
+ }
+
     return resArray
 }
 
 function convertListToArray(theListString) {
-    var theListArray = theListString.split("Cancel\n")
-    //removeCancelledList
-    theListArray.splice(-1, 1)
-    var finalList = [
-    ["DateOfVaccine", "Name", "DateOfBirth", "NHSNumber", "PostCode", "FirstOrSecond", "Vaccinator", "Status"]
+    theListString = theListString.replaceAll("reinstate\n", "");
+theListString = theListString.replaceAll("Cancel\n", "");
+var theListArray = theListString.split("Click to ")
+//removeCancelledList
+theListArray.splice(-1, 1)
+var finalList = [
+["DateOfVaccine", "Name", "DateOfBirth", "NHSNumber", "PostCode", "FirstOrSecond", "Vaccinator", "Status"]
 ];
-    theListArray.forEach(function (listItem) {
-        finalList.push(extractSingleRecordToArray(listItem));
-    });
-    return finalList;
+theListArray.forEach(function (listItem) {
+    finalList.push(extractSingleRecordToArray(listItem));
+});
+return finalList;
 }
 
 function generateCSVString(fullpagestring) {
@@ -67,12 +90,13 @@ function generateTable(obj) {
 
 function getPinnacleStats(csvObjects) {
     var stats = {};
-    stats['Completed'] = csvObjects.filter(patient => patient.Status == "Completed").length;
-    stats['First'] = csvObjects.filter(patient => patient.FirstOrSecond == "First Vaccination").length;
-    stats['Second'] = csvObjects.filter(patient => patient.FirstOrSecond == "Second Vaccination").length;
-    stats['Dec'] = csvObjects.filter(patient => patient.DateOfVaccine.slice(5, 7) == "12").length;
-    stats['Jan'] = csvObjects.filter(patient => patient.DateOfVaccine.slice(5, 7) == "01").length;
-    stats['Feb'] = csvObjects.filter(patient => patient.DateOfVaccine.slice(5, 7) == "02").length;
+    completedObjects = csvObjects.filter(patient => patient.Status == "Completed")
+    stats['Completed'] = completedObjects.length;
+    stats['First'] = completedObjects.filter(patient => patient.FirstOrSecond == "First Vaccination").length;
+    stats['Second'] = completedObjects.filter(patient => patient.FirstOrSecond == "Second Vaccination").length;
+    stats['Dec'] = completedObjects.filter(patient => patient.DateOfVaccine.slice(5, 7) == "12").length;
+    stats['Jan'] = completedObjects.filter(patient => patient.DateOfVaccine.slice(5, 7) == "01").length;
+    stats['Feb'] = completedObjects.filter(patient => patient.DateOfVaccine.slice(5, 7) == "02").length;
     return stats
 }
 
