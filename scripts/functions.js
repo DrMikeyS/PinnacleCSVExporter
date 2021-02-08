@@ -98,6 +98,7 @@ function getPinnacleStats(csvObjects) {
     stats['Dec'] = completedObjects.filter(patient => patient.DateOfVaccine.slice(5, 7) == "12").length;
     stats['Jan'] = completedObjects.filter(patient => patient.DateOfVaccine.slice(5, 7) == "01").length;
     stats['Feb'] = completedObjects.filter(patient => patient.DateOfVaccine.slice(5, 7) == "02").length;
+    stats['Completed but missing dose'] = completedObjects.filter(patient => patient.FirstOrSecond == "").length;
     return stats
 }
 
@@ -171,10 +172,10 @@ function checkForPinnacleDuplicates(pinnacleObjs) {
     );
     listByDose = [
       pinnacleObjs.filter(
-            (patient) => patient.FirstOrSecond == "First Vaccination"
+            (patient) => patient.FirstOrSecond == "First Vaccination" || patient.FirstOrSecond == ""
         ),
       pinnacleObjs.filter(
-            (patient) => patient.FirstOrSecond == "Second Vaccination"
+            (patient) => patient.FirstOrSecond == "Second Vaccination" || patient.FirstOrSecond == ""
         ),
     ];
     for (list of listByDose) {
