@@ -155,7 +155,7 @@ function checkForPinnacleDuplicates(pinnacleObjs) {
     for (list of listByDose) {
         for (pinnaclePatient of list) {
             search = list.filter(
-                (patient) => patient.NHSNumberstr.replace(/\s/g, '') == pinnaclePatient.NHSNumber.replace(/\s/g, '')
+                (patient) => patient.NHSNumberstr == pinnaclePatient.NHSNumber
             ).length;
             if (search > 1) {
                 duplicatePatients.push(pinnaclePatient);
