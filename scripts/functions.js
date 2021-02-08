@@ -124,14 +124,14 @@ function compareAccubookPinnacle(accubookObjs, pinnacleObjs) {
     accubookObjs = accubookObjs.filter(patient => patient.Arrived == "True");
     pinnacleObjs = pinnacleObjs.filter(patient => patient.Status == "Completed")
     for (pinnaclePatient of pinnacleObjs) {
-        search = accubookObjs.filter(patient => patient.NhsNumber == pinnaclePatient.NHSNumber).length;
+        search = accubookObjs.filter(patient => patient.NhsNumber.replace(/\s/g, '') == pinnaclePatient.NHSNumber.replace(/\s/g, '')).length;
         if (search === 0) {
             patientsNotFound['pinnacleNotFoundInAccubook'].push(pinnaclePatient);
         }
     }
 
     for (accubookPatient of accubookObjs) {
-        search = pinnacleObjs.filter(patient => patient.NHSNumber == accubookPatient.NhsNumber).length;
+        search = pinnacleObjs.filter(patient => patient.NHSNumber.replace(/\s/g, '') == accubookPatient.NhsNumber.replace(/\s/g, '')).length;
         if (search === 0) {
             patientsNotFound['accubookNotFoundInPinnacle'].push(accubookPatient);
         }
@@ -155,7 +155,7 @@ function checkForPinnacleDuplicates(pinnacleObjs) {
     for (list of listByDose) {
         for (pinnaclePatient of list) {
             search = list.filter(
-                (patient) => patient.NHSNumber == pinnaclePatient.NHSNumber
+                (patient) => patient.NHSNumberstr.replace(/\s/g, '') == pinnaclePatient.NHSNumber.replace(/\s/g, '')
             ).length;
             if (search > 1) {
                 duplicatePatients.push(pinnaclePatient);
