@@ -9,9 +9,6 @@ The system also provides a very basic dashboard with some key data points you ma
 
 If you find this useful, checkout the [COVID Vaccine QR Generator](https://github.com/DrMikeyS/COVIDVaccinePatientSlips "COVID Vaccine QR Generator") which may also be useful for your clinic. Also free!
 
-## Web Version (for testing)
-While the code has been tested to keep all data in the browser and nothing transmitted, to be super safe, I suggest downloading the code and running on your machine. I have uploaded a [web version](https://durhamstudenthealth.co.uk/PinnacleCSVExporter/ "web version") that can be used for testing only.
-
 ## How this Works & Data Security
 All data is processed on your computer and at no point leaves your machine. The source code is open should you wish to inspect it. As with anything open source, using this is entierly at your own risk.
 
